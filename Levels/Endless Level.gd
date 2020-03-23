@@ -5,6 +5,7 @@ var enemy_scene = preload("res://Enemies/Enemy.tscn")
 func _on_Spawn_Enemy_timeout():
 	var enemy = enemy_scene.instance()
 	enemy.position = get_random_position_outside_level()
+	enemy.set_target_dir($Player.position)
 	$Enemies.add_child(enemy)
 
 func get_random_position_outside_level():
