@@ -6,7 +6,7 @@ const SPEED = 300
 # Movement variables
 var velocity = Vector2()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	get_input()
 	movement()
 
