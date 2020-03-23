@@ -6,7 +6,7 @@ var velocity = Vector2()
 
 var target_dir
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	movement()
 
 func movement():
