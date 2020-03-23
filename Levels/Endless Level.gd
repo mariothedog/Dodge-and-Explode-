@@ -2,6 +2,9 @@ extends Node2D
 
 var enemy_scene = preload("res://Enemies/Enemy.tscn")
 
+func _ready():
+	randomize()
+
 func _on_Spawn_Enemy_timeout():
 	var enemy = enemy_scene.instance()
 	enemy.position = get_random_position_outside_level()
