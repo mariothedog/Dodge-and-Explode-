@@ -4,4 +4,7 @@
 
 [node name="Endless Level" type="Node2D"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
