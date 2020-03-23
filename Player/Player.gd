@@ -26,3 +26,7 @@ func get_input():
 
 func movement():
 	velocity = move_and_slide(velocity)
+
+func die():
+	if get_tree().reload_current_scene() != OK:
+		print_debug("An error occured while reloading the current scene.")

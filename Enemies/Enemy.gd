@@ -22,6 +22,9 @@ func movement():
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "TileMap":
 			die()
+		else:
+			# Player
+			collision.collider.die()
 
 func set_target_dir(target_pos):
 	target_dir = position.direction_to(target_pos)
