@@ -13,7 +13,8 @@ func _physics_process(_delta):
 	movement()
 
 func movement():
-	velocity = target_dir * SPEED
+	if target_dir:
+		velocity = target_dir * SPEED
 	
 	velocity = move_and_slide(velocity)
 	
