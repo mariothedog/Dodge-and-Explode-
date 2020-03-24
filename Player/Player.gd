@@ -1,7 +1,11 @@
 extends KinematicBody2D
 
+# Signals
+signal slow_mo_enabled
+signal slow_mo_disabled
+
 # Movement constants
-const SPEED = 300
+const SPEED = 350
 
 # Movement variables
 var velocity = Vector2()
@@ -58,19 +62,20 @@ func _process(_delta):
 			slow_mo_fade_out = false
 			slow_mo_enabled = false
 			time_scale = END_SPEED
+			emit_signal("slow_mo_disabled")
 		Engine.time_scale = time_scale
 
 func start_slow_mo(start_strength = 0.9):
-	time_start = OS.get_ticks_msec()
 	start_speed = 1 - start_strength
 	Engine.time_scale = start_speed
 	slow_mo_enabled = true
+	emit_signal("slow_mo_enabled")
 
-func stop_slow_mo(fade_duration = 0.2):
+func stop_slow_mo(fade_duration = 0.4):
+	time_start = OS.get_ticks_msec()
 	fade_duration_ms = fade_duration * 1000
 	slow_mo_fade_out = true
 
 func circ_ease_in(t, b, c, d):
-	# http://gizma.com/easing/
 	t /= d
 	return -c * (sqrt(1 - t * t) - 1 ) + b
