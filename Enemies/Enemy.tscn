@@ -11,13 +11,43 @@ extents = Vector2( 12, 12 )
 collision_layer = 4
 collision_mask = 3
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [ -24.0 ]
+}
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Body" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Body"]
 margin_left = -16.0
 margin_top = -16.0
+rect_pivot_offset = Vector2( 8, 8 )
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="Body"]
+margin_top = -16.0
+margin_right = 16.0
+rect_pivot_offset = Vector2( 8, 8 )
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect3" type="ColorRect" parent="Body"]
+margin_left = -16.0
+margin_bottom = 16.0
+rect_pivot_offset = Vector2( 8, 8 )
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect4" type="ColorRect" parent="Body"]
 margin_right = 16.0
 margin_bottom = 16.0
-rect_pivot_offset = Vector2( 16, 16 )
+rect_pivot_offset = Vector2( 8, 8 )
 color = Color( 1, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -31,4 +61,6 @@ collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tile Collision Enabler"]
 shape = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
 [connection signal="body_exited" from="Tile Collision Enabler" to="." method="_on_Tile_Collision_Enabler_body_exited"]
