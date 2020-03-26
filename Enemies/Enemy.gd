@@ -46,8 +46,8 @@ func play_death_animation():
 	for segment in $Body.get_children():
 		var segment_dir = (segment.rect_position + segment.rect_pivot_offset).normalized()
 		
-		segment_dir = segment_dir.rotated(deg2rad(rand_range(0, 45)))
-			
+		segment_dir = segment_dir.rotated(deg2rad(rand_range(0, 45))) # To add some variation to the segment movement.
+		
 		var final_pos = segment.rect_position + segment_dir * 40
 		$Tween.interpolate_property(segment, "rect_position", segment.rect_position, final_pos, 0.1, Tween.TRANS_QUAD, Tween.EASE_OUT)
 		$Tween.start()
