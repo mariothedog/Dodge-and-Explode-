@@ -7,6 +7,9 @@ signal slow_mo_disabled
 # Movement constants
 const SPEED = 350
 
+# Main variables
+var dead = false
+
 # Movement variables
 var velocity = Vector2()
 
@@ -25,7 +28,8 @@ func _ready():
 
 func _physics_process(_delta):
 	get_input()
-	movement()
+	if not dead:
+		movement()
 
 func get_input():
 	var input_vel = Vector2()
@@ -45,8 +49,32 @@ func movement():
 	velocity = move_and_slide(velocity)
 
 func die():
-	if get_tree().reload_current_scene() != OK:
-		print_debug("An error occured while reloading the current scene.")
+	if not dead:
+		dead = true
+		
+		velocity = Vector2.ZERO
+		
+		$CollisionShape2D.set_deferred("disabled", true)
+		$"Slow-mo Activator/CollisionShape2D".set_deferred("disabled", true)
+		
+		play_death_animation()
+		
+		yield($Tween, "tween_all_completed")
+		if get_tree().reload_current_scene() != OK:
+			print_debug("An error occured while reloading the current scene.")
+
+func play_death_animation():
+	for segment in $Body.get_children():
+		var segment_dir = (segment.rect_position + segment.rect_pivot_offset).normalized()
+		
+		segment_dir = segment_dir.rotated(deg2rad(rand_range(0, 45))) # To add some variation to the segment movement.
+		
+		var final_pos = segment.rect_position + segment_dir * 40
+		$Tween.interpolate_property(segment, "rect_position", segment.rect_position, final_pos, 0.1, Tween.TRANS_QUAD, Tween.EASE_OUT)
+		$Tween.start()
+		
+		$Tween.interpolate_property(segment, "color", Color(0, 0, 0, 1), Color(0, 0, 0, 0), 0.5)
+		$Tween.start()
 
 func _on_Slowmo_Activator_body_entered(_body):
 	start_slow_mo()

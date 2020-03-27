@@ -13,7 +13,8 @@ func _ready():
 		velocity = target_dir * SPEED
 
 func _physics_process(_delta):
-	movement()
+	if not get_parent().get_parent().get_node("Player").dead:
+		movement()
 
 func movement():
 	velocity = move_and_slide(velocity)
