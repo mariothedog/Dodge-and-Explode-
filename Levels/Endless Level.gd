@@ -46,13 +46,16 @@ func _on_Player_slow_mo_disabled():
 	$"Visual Effect".material.set_shader_param("slow_mo", false)
 
 func _process(_delta):
+	# When the time scale is 0.1 the chromatic_amount will be 0.5.
+	# When the time_scale is 1 the chromatic_amount will be 0.3.
+	var chromatic_amount = -2.0/9.0 * Engine.time_scale + 47.0/90.0
+	$"Visual Effect".material.set_shader_param("chromatic_amount", chromatic_amount)
+	
 	if $Player.slow_mo_enabled:
-		# When the time scale is 0.1 the blur_amount/chromatic_amount will be 0.5.
-		# When the time_scale is 1 the blur_amount/chromatic_amount will be 0.
-		var amount = -5.0/9.0 * Engine.time_scale + 5.0/9.0
-		$"Visual Effect".material.set_shader_param("blur_amount", amount)
-		
-		$"Visual Effect".material.set_shader_param("chromatic_amount", amount)
+		# When the time scale is 0.1 the blur_amount will be 0.5.
+		# When the time_scale is 1 the blur_amount will be 0.
+		var blur_amount = -5.0/9.0 * Engine.time_scale + 5.0/9.0
+		$"Visual Effect".material.set_shader_param("blur_amount", blur_amount)
 		
 		# When the time_scale is 1 the darkness_multi will also be 1.
 		# When the time_scale is 0.1 the darkness_multi will be 0.8.

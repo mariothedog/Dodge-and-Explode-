@@ -63,15 +63,18 @@ void fragment() {
 	if (slow_mo) {
 		// Blur
 		color = textureLod(SCREEN_TEXTURE, SCREEN_UV + bend_offset, blur_amount);
-		
-		// Chromatic Aberration
-		float adjusted_amount = chromatic_amount / 100.0;
-		color.r = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x + adjusted_amount, SCREEN_UV.y) + bend_offset).r;
-		color.b = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x - adjusted_amount, SCREEN_UV.y) + bend_offset).b;
-		
+	}
+	
+	// Chromatic Aberration
+	float adjusted_amount = chromatic_amount / 100.0;
+	color.r = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x + adjusted_amount, SCREEN_UV.y) + bend_offset).r;
+	color.b = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x - adjusted_amount, SCREEN_UV.y) + bend_offset).b;
+	
+	if (slow_mo) {
 		// Darken the screen
 		color.rgb *= darkness_multi;
 	}
+	
 	COLOR = color;
 }"
 
