@@ -1,6 +1,10 @@
 extends Node2D
 
+# Preload resources
 var enemy_scene = preload("res://Enemies/Enemy.tscn")
+
+# Signals
+signal manually_restarting
 
 # Main constants
 const centre = Vector2.ZERO
@@ -95,6 +99,7 @@ func _on_Player_dead():
 
 func manual_restart():
 	restarting = true
+	emit_signal("manually_restarting")
 	$"Spawn Enemy".stop()
 	
 	$Player.disable_collision_shapes()

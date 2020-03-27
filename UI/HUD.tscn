@@ -19,9 +19,12 @@ __meta__ = {
 }
 
 [node name="Score" type="Label" parent="MarginContainer"]
-margin_top = 56.0
+margin_top = 41.0
 margin_right = 240.0
-margin_bottom = 165.0
+margin_bottom = 150.0
 custom_fonts/font = SubResource( 1 )
 text = "0"
 autowrap = true
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="tween_step" from="Tween" to="." method="_on_Tween_tween_step"]
