@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Signals
 signal slow_mo_enabled
 signal slow_mo_disabled
+signal dead
 
 # Movement constants
 const SPEED = 350
@@ -23,11 +24,18 @@ var time_start
 var fade_duration_ms
 var start_speed
 
+# Restarting constants
+const move_to_centre_speed = 15
+
 func _ready():
 	Engine.time_scale = 1
 
 func _physics_process(_delta):
-	get_input()
+	if get_parent().restarting:
+		if not dead:
+			position = position.move_toward(get_parent().centre, move_to_centre_speed)
+	else:
+		get_input()
 	if not dead:
 		movement()
 
@@ -45,11 +53,6 @@ func get_input():
 		input_vel.y += 1
 	
 	velocity = input_vel.normalized() * SPEED
-	
-	# Other input.
-	if Input.is_action_just_pressed("restart"):
-		if get_tree().reload_current_scene() != OK:
-			print_debug("An error occured while reloading the current scene.")
 
 func movement():
 	velocity = move_and_slide(velocity)
@@ -57,17 +60,19 @@ func movement():
 func die():
 	if not dead:
 		dead = true
+		emit_signal("dead")
 		
 		velocity = Vector2.ZERO
 		
-		$CollisionShape2D.set_deferred("disabled", true)
-		$"Slow-mo Activator/CollisionShape2D".set_deferred("disabled", true)
+		disable_collision_shapes()
 		
 		play_death_animation()
 		
 		yield($Tween, "tween_all_completed")
-		if get_tree().reload_current_scene() != OK:
-			print_debug("An error occured while reloading the current scene.")
+		
+		if not get_parent().restarting:
+			if get_tree().reload_current_scene() != OK:
+				print_debug("An error occured while reloading the current scene.")
 
 func play_death_animation():
 	for segment in $Body.get_children():
@@ -113,3 +118,7 @@ func stop_slow_mo(fade_duration = 0.4):
 func circ_ease_in(t, b, c, d):
 	t /= d
 	return -c * (sqrt(1 - t * t) - 1 ) + b
+
+func disable_collision_shapes():
+	$CollisionShape2D.set_deferred("disabled", true)
+	$"Slow-mo Activator/CollisionShape2D".set_deferred("disabled", true)

@@ -13,8 +13,7 @@ func _ready():
 		velocity = target_dir * SPEED
 
 func _physics_process(_delta):
-	if not get_parent().get_parent().get_node("Player").dead:
-		movement()
+	movement()
 
 func movement():
 	velocity = move_and_slide(velocity)
@@ -55,3 +54,6 @@ func play_death_animation():
 		
 		$Tween.interpolate_property(segment, "color", Color(1, 0, 0, 1), Color(1, 0, 0, 0), 0.5)
 		$Tween.start()
+
+func disable_collisions():
+	$CollisionShape2D.set_deferred("disabled", true)

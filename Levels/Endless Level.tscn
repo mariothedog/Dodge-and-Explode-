@@ -144,6 +144,7 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="dead" from="Player" to="." method="_on_Player_dead"]
 [connection signal="slow_mo_disabled" from="Player" to="." method="_on_Player_slow_mo_disabled"]
 [connection signal="slow_mo_enabled" from="Player" to="." method="_on_Player_slow_mo_enabled"]
 [connection signal="timeout" from="Spawn Enemy" to="." method="_on_Spawn_Enemy_timeout"]

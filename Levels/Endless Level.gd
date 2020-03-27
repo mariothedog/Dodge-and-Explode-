@@ -2,10 +2,21 @@ extends Node2D
 
 var enemy_scene = preload("res://Enemies/Enemy.tscn")
 
+# Main constants
+const centre = Vector2.ZERO
+
+# Restarting variables
+var restarting = false
+var player_death_anim_played = false
+
 func _ready():
 	randomize()
 	
 	$"Visual Effect".material.set_shader_param("slow_mo", false)
+
+func _input(_event):
+	if Input.is_action_just_pressed("restart") and not restarting:
+		manual_restart()
 
 func _on_Spawn_Enemy_timeout():
 	var enemy = enemy_scene.instance()
@@ -46,18 +57,54 @@ func _on_Player_slow_mo_disabled():
 	$"Visual Effect".material.set_shader_param("slow_mo", false)
 
 func _process(_delta):
-	# When the time scale is 0.1 the chromatic_amount will be 0.5.
-	# When the time_scale is 1 the chromatic_amount will be 0.3.
-	var chromatic_amount = -2.0/9.0 * Engine.time_scale + 47.0/90.0
-	$"Visual Effect".material.set_shader_param("chromatic_amount", chromatic_amount)
-	
-	if $Player.slow_mo_enabled:
-		# When the time scale is 0.1 the blur_amount will be 0.5.
-		# When the time_scale is 1 the blur_amount will be 0.
-		var blur_amount = -5.0/9.0 * Engine.time_scale + 5.0/9.0
-		$"Visual Effect".material.set_shader_param("blur_amount", blur_amount)
+	if restarting:
+		if $Player.position == centre or $Player.dead:
+			if not player_death_anim_played and not $Player.dead:
+				$Player.play_death_animation()
+				player_death_anim_played = true
+			
+			for enemy in $Enemies.get_children():
+				if (enemy.position.x < $"Corners/Top Left".position.x - 16 or enemy.position.x > $"Corners/Top Right".position.x + 16 or
+				enemy.position.y < $"Corners/Top Left".position.y - 16 or enemy.position.y > $"Corners/Bottom Left".position.y + 16):
+					enemy.queue_free()
+			
+			if $Enemies.get_child_count() == 0:
+				if get_tree().reload_current_scene() != OK:
+					print_debug("An error occured while reloading the current scene.")
+	else:
+		# When the time scale is 0.1 the chromatic_amount will be 0.5.
+		# When the time_scale is 1 the chromatic_amount will be 0.3.
+		var chromatic_amount = -2.0/9.0 * Engine.time_scale + 47.0/90.0
+		$"Visual Effect".material.set_shader_param("chromatic_amount", chromatic_amount)
 		
-		# When the time_scale is 1 the darkness_multi will also be 1.
-		# When the time_scale is 0.1 the darkness_multi will be 0.8.
-		var darkness_multi = 2.0/9.0 * Engine.time_scale + 7.0/9.0
-		$"Visual Effect".material.set_shader_param("darkness_multi", darkness_multi)
+		if $Player.slow_mo_enabled:
+			# When the time scale is 0.1 the blur_amount will be 0.5.
+			# When the time_scale is 1 the blur_amount will be 0.
+			var blur_amount = -5.0/9.0 * Engine.time_scale + 5.0/9.0
+			$"Visual Effect".material.set_shader_param("blur_amount", blur_amount)
+			
+			# When the time_scale is 1 the darkness_multi will also be 1.
+			# When the time_scale is 0.1 the darkness_multi will be 0.8.
+			var darkness_multi = 2.0/9.0 * Engine.time_scale + 7.0/9.0
+			$"Visual Effect".material.set_shader_param("darkness_multi", darkness_multi)
+
+func _on_Player_dead():
+	$"Spawn Enemy".stop()
+	for enemy in $Enemies.get_children():
+		enemy.velocity = Vector2.ZERO
+
+func manual_restart():
+	restarting = true
+	$"Spawn Enemy".stop()
+	
+	$Player.disable_collision_shapes()
+	$Player.velocity = Vector2.ZERO
+	
+	for enemy in $Enemies.get_children():
+		if enemy.velocity == Vector2.ZERO:
+			enemy.velocity = enemy.target_dir * enemy.SPEED
+		enemy.velocity *= -1
+		enemy.disable_collisions()
+
+func _on_Player_at_centre_after_restarting():
+	$Player.velocity = Vector2.ZERO
