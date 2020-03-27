@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Levels/Art/Tile.png" type="Texture" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://Levels/Endless Level.gd" type="Script" id=4]
 [ext_resource path="res://Levels/Textures/Screen Bend Texture.png" type="Texture" id=5]
+[ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -144,6 +145,8 @@ expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HUD" parent="." instance=ExtResource( 6 )]
 [connection signal="dead" from="Player" to="." method="_on_Player_dead"]
 [connection signal="slow_mo_disabled" from="Player" to="." method="_on_Player_slow_mo_disabled"]
 [connection signal="slow_mo_enabled" from="Player" to="." method="_on_Player_slow_mo_enabled"]

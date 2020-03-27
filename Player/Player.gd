@@ -72,7 +72,7 @@ func die():
 		
 		if not get_parent().restarting:
 			if get_tree().reload_current_scene() != OK:
-				print_debug("An error occured while reloading the current scene.")
+				print_debug("An error occurred while reloading the current scene.")
 
 func play_death_animation():
 	for segment in $Body.get_children():

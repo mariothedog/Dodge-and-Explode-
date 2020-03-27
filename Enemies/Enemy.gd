@@ -1,9 +1,13 @@
 extends KinematicBody2D
 
+# Signals
+signal dead
+
+# Movement constants
 const SPEED = 300
 
+# Movement variables
 var velocity = Vector2()
-
 var target_dir
 
 func _ready():
@@ -11,6 +15,9 @@ func _ready():
 	
 	if target_dir:
 		velocity = target_dir * SPEED
+	
+	if connect("dead", get_parent().get_parent().get_node("HUD"), "_on_Enemy_dead") != OK:
+		print_debug("An error occured while connecting a signal to a method.")
 
 func _physics_process(_delta):
 	movement()
@@ -33,6 +40,8 @@ func _on_Tile_Collision_Enabler_body_exited(_body):
 	$CollisionShape2D.set_deferred("disabled", false)
 
 func die():
+	emit_signal("dead")
+	
 	velocity = Vector2.ZERO
 	$CollisionShape2D.set_deferred("disabled", true)
 	

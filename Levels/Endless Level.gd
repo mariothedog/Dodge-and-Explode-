@@ -70,7 +70,7 @@ func _process(_delta):
 			
 			if $Enemies.get_child_count() == 0:
 				if get_tree().reload_current_scene() != OK:
-					print_debug("An error occured while reloading the current scene.")
+					print_debug("An error occurred while reloading the current scene.")
 	else:
 		# When the time scale is 0.1 the chromatic_amount will be 0.5.
 		# When the time_scale is 1 the chromatic_amount will be 0.3.
