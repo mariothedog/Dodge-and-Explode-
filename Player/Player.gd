@@ -32,6 +32,7 @@ func _physics_process(_delta):
 		movement()
 
 func get_input():
+	# Movement input.
 	var input_vel = Vector2()
 	
 	if Input.is_action_pressed("move_right"):
@@ -44,6 +45,11 @@ func get_input():
 		input_vel.y += 1
 	
 	velocity = input_vel.normalized() * SPEED
+	
+	# Other input.
+	if Input.is_action_just_pressed("restart"):
+		if get_tree().reload_current_scene() != OK:
+			print_debug("An error occured while reloading the current scene.")
 
 func movement():
 	velocity = move_and_slide(velocity)
