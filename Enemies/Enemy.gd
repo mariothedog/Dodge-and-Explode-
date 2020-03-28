@@ -24,6 +24,7 @@ func _ready():
 
 func _physics_process(_delta):
 	movement()
+	ai()
 
 func movement():
 	velocity = move_and_slide(velocity)
@@ -35,6 +36,9 @@ func movement():
 		else:
 			# Player
 			collision.collider.die()
+
+func ai():
+	pass
 
 func set_target_dir(target_pos):
 	target_dir = position.direction_to(target_pos)
