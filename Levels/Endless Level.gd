@@ -93,6 +93,8 @@ func _process(_delta):
 			$"Visual Effect".material.set_shader_param("darkness_multi", darkness_multi)
 
 func _on_Player_dead():
+	$Camera2D.shake(0.4, 70.0, 16.0)
+	
 	$"Spawn Enemy".stop()
 	for enemy in $Enemies.get_children():
 		enemy.velocity = Vector2.ZERO
@@ -113,3 +115,6 @@ func manual_restart():
 
 func _on_Player_at_centre_after_restarting():
 	$Player.velocity = Vector2.ZERO
+
+func _on_Enemy_dead():
+	$Camera2D.shake(0.2, 15.0, 8.0)

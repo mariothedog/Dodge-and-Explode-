@@ -18,6 +18,9 @@ func _ready():
 	
 	if connect("dead", get_parent().get_parent().get_node("HUD"), "_on_Enemy_dead") != OK:
 		print_debug("An error occured while connecting a signal to a method.")
+	
+	if connect("dead", get_parent().get_parent(), "_on_Enemy_dead") != OK:
+		print_debug("An error occured while connecting a signal to a method.")
 
 func _physics_process(_delta):
 	movement()
