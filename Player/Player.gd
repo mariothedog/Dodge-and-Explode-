@@ -32,8 +32,6 @@ var start_speed
 const move_to_centre_speed = 15
 
 func _ready():
-	Engine.time_scale = 1
-	
 	$Dash.wait_time = DASH_DURATION
 
 func _physics_process(_delta):

@@ -14,9 +14,10 @@ var restarting = false
 var player_death_anim_played = false
 
 func _ready():
-	randomize()
-	
+	Engine.time_scale = 1
 	$"Visual Effect".material.set_shader_param("slow_mo", false)
+	
+	randomize()
 
 func _input(_event):
 	if Input.is_action_just_pressed("restart") and not restarting:
