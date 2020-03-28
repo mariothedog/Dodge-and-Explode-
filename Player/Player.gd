@@ -34,13 +34,13 @@ const move_to_centre_speed = 15
 func _ready():
 	$Dash.wait_time = DASH_DURATION
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	if not dead:
 		if get_parent().restarting:
 			position = position.move_toward(get_parent().centre, move_to_centre_speed)
 		else:
 			get_input()
-		movement()
+		movement(delta)
 
 func get_input():
 	# Movement input.
@@ -67,8 +67,13 @@ func get_input():
 	else:
 		velocity = input_vel.normalized() * SPEED
 
-func movement():
-	velocity = move_and_slide(velocity)
+func movement(delta):
+	var collision = move_and_collide(velocity * delta)
+	
+	if collision:
+		if collision.collider.name != "TileMap":
+			# Enemy
+			die()
 
 func die():
 	if not dead:

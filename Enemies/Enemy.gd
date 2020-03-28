@@ -22,20 +22,16 @@ func _ready():
 	if connect("dead", get_parent().get_parent(), "_on_Enemy_dead") != OK:
 		print_debug("An error occured while connecting a signal to a method.")
 
-func _physics_process(_delta):
-	movement()
+func _physics_process(delta):
+	movement(delta)
 	ai()
 
-func movement():
-	velocity = move_and_slide(velocity)
+func movement(delta):
+	var collision = move_and_collide(velocity * delta)
 	
-	for i in range(get_slide_count()):
-		var collision = get_slide_collision(i)
+	if collision:
 		if collision.collider.name == "TileMap":
 			die()
-		else:
-			# Player
-			collision.collider.die()
 
 func ai():
 	pass
