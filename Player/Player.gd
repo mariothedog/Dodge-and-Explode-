@@ -5,14 +5,18 @@ signal slow_mo_enabled
 signal slow_mo_disabled
 signal dead
 
-# Movement constants
-const SPEED = 350
-
 # Main variables
 var dead = false
 
+# Movement constants
+const SPEED = 400
+const DASH_SPEED = 2000
+const DASH_DURATION = 0.05
+
 # Movement variables
 var velocity = Vector2()
+var dash = false
+var currently_dashing = false
 
 # Slow-mo constants
 const END_SPEED = 1
@@ -29,14 +33,15 @@ const move_to_centre_speed = 15
 
 func _ready():
 	Engine.time_scale = 1
+	
+	$Dash.wait_time = DASH_DURATION
 
 func _physics_process(_delta):
-	if get_parent().restarting:
-		if not dead:
-			position = position.move_toward(get_parent().centre, move_to_centre_speed)
-	else:
-		get_input()
 	if not dead:
+		if get_parent().restarting:
+			position = position.move_toward(get_parent().centre, move_to_centre_speed)
+		else:
+			get_input()
 		movement()
 
 func get_input():
@@ -52,7 +57,17 @@ func get_input():
 	if Input.is_action_pressed("move_down"):
 		input_vel.y += 1
 	
-	velocity = input_vel.normalized() * SPEED
+	if Input.is_action_just_pressed("dash"):
+		currently_dashing = true
+		$Dash.start()
+	
+	if currently_dashing:
+		if input_vel == Vector2.ZERO:
+			velocity = velocity.normalized() * DASH_SPEED
+		else:
+			velocity = input_vel.normalized() * DASH_SPEED
+	else:
+		velocity = input_vel.normalized() * SPEED
 
 func movement():
 	velocity = move_and_slide(velocity)
@@ -122,3 +137,6 @@ func circ_ease_in(t, b, c, d):
 func disable_collision_shapes():
 	$CollisionShape2D.set_deferred("disabled", true)
 	$"Slow-mo Activator/CollisionShape2D".set_deferred("disabled", true)
+
+func _on_Dash_timeout():
+	currently_dashing = false
