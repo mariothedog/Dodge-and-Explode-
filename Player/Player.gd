@@ -73,7 +73,10 @@ func movement(delta):
 	if collision:
 		if collision.collider.name != "TileMap":
 			# Enemy
-			die()
+			if currently_dashing:
+				collision.collider.die()
+			else:
+				die()
 
 func die():
 	if not dead:
