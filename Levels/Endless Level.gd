@@ -73,7 +73,7 @@ func _process(_delta):
 				enemy.position.y < $"Corners/Top Left".position.y - 16 or enemy.position.y > $"Corners/Bottom Left".position.y + 16):
 					enemy.queue_free()
 			
-			if $Enemies.get_child_count() == 0:
+			if $Enemies.get_child_count() == 0 and not $Player/Tween.is_active():
 				if get_tree().reload_current_scene() != OK:
 					print_debug("An error occurred while reloading the current scene.")
 	else:
