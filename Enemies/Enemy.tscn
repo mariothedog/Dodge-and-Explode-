@@ -7,7 +7,7 @@ extents = Vector2( 12, 12 )
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 2
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_vertical_guides_": [ -24.0 ]
