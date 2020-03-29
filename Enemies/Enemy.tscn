@@ -7,7 +7,7 @@ extents = Vector2( 12, 12 )
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_vertical_guides_": [ -24.0 ]
@@ -56,10 +56,9 @@ shape = SubResource( 1 )
 
 [node name="Tile Collision Enabler" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tile Collision Enabler"]
 shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
-[connection signal="area_entered" from="Tile Collision Enabler" to="." method="_on_Tile_Collision_Enabler_area_entered"]
+[connection signal="body_exited" from="Tile Collision Enabler" to="." method="_on_Tile_Collision_Enabler_body_exited"]
