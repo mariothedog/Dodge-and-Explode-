@@ -8,28 +8,29 @@ signal dead
 # Main variables
 var dead = false
 
-# Movement constants
+# Movement variables
 const SPEED = 400
 const DASH_SPEED = 2000
 const DASH_DURATION = 0.05
 
-# Movement variables
 var velocity = Vector2()
 var dash = false
 var currently_dashing = false
 
-# Slow-mo constants
+# Slow-mo variables
 const END_SPEED = 1
 
-# Slow-mo variables
 var slow_mo_enabled = false
 var slow_mo_fade_out = false
 var time_start
 var fade_duration_ms
 var start_speed
 
-# Restarting constants
+# Restarting variables
 const move_to_centre_speed = 15
+
+# Combo variables
+var combo = 0
 
 func _ready():
 	$Dash.wait_time = DASH_DURATION
@@ -55,7 +56,7 @@ func get_input():
 	if Input.is_action_pressed("move_down"):
 		input_vel.y += 1
 	
-	if Input.is_action_just_pressed("dash"):
+	if Input.is_action_just_pressed("dash") and input_vel != Vector2.ZERO:
 		currently_dashing = true
 		$Dash.start()
 	
@@ -75,7 +76,7 @@ func movement():
 		if collision.collider.name != "TileMap":
 			# Enemy
 			if currently_dashing:
-				collision.collider.die()
+				collision.collider.die(self)
 			else:
 				die()
 
@@ -147,3 +148,13 @@ func disable_collision_shapes():
 
 func _on_Dash_timeout():
 	currently_dashing = false
+
+func increase_combo():
+	combo += 1
+	$"Combo Decrease".start()
+
+func reset_combo():
+	combo = 0
+
+func _on_Combo_Decrease_timeout():
+	reset_combo()

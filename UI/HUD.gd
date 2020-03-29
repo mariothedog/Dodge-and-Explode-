@@ -5,8 +5,9 @@ var score = 0
 func update_score(value):
 	$MarginContainer/Score.text = str(value)
 
-func _on_Enemy_dead():
-	score += 10
+func _on_Enemy_dead(_cause):
+	var combo = get_parent().get_node("Player").combo
+	score += 10 + (combo - 1) * 5
 	
 	update_score(score)
 

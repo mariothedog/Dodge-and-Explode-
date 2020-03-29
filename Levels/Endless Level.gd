@@ -6,7 +6,7 @@ var enemy_scene = preload("res://Enemies/Enemy.tscn")
 # Signals
 signal manually_restarting
 
-# Main constants
+# Main variables
 const centre = Vector2.ZERO
 
 # Restarting variables
@@ -117,5 +117,9 @@ func manual_restart():
 func _on_Player_at_centre_after_restarting():
 	$Player.velocity = Vector2.ZERO
 
-func _on_Enemy_dead():
-	$Camera2D.shake(0.2, 15.0, 8.0)
+func _on_Enemy_dead(cause):
+	if cause.name == "Player":
+		# If the player dashed into the enemy.
+		$Camera2D.shake(0.3, 30.0, 12.0)
+	else:
+		$Camera2D.shake(0.2, 15.0, 8.0)

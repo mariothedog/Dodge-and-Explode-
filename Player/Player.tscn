@@ -66,6 +66,11 @@ shape = SubResource( 2 )
 [node name="Dash" type="Timer" parent="."]
 wait_time = 0.05
 one_shot = true
+
+[node name="Combo Decrease" type="Timer" parent="."]
+wait_time = 0.8
+autostart = true
 [connection signal="body_entered" from="Slow-mo Activator" to="." method="_on_Slowmo_Activator_body_entered"]
 [connection signal="body_exited" from="Slow-mo Activator" to="." method="_on_Slowmo_Activator_body_exited"]
 [connection signal="timeout" from="Dash" to="." method="_on_Dash_timeout"]
+[connection signal="timeout" from="Combo Decrease" to="." method="_on_Combo_Decrease_timeout"]

@@ -3,10 +3,12 @@ extends KinematicBody2D
 # Signals
 signal dead
 
-# Movement constants
-const SPEED = 300
+# Main variables
+var dead = false
 
 # Movement variables
+const SPEED = 300
+
 var velocity = Vector2()
 var target_dir
 
@@ -30,11 +32,11 @@ func movement():
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "TileMap":
-			die()
+			die(collision.collider)
 		else:
 			# Player
 			if collision.collider.currently_dashing:
-				die()
+				die(collision.collider)
 			else:
 				collision.collider.die()
 
@@ -47,17 +49,24 @@ func set_target_dir(target_pos):
 func _on_Tile_Collision_Enabler_body_exited(_body):
 	collision_mask = 1
 
-func die():
-	emit_signal("dead")
-	
-	velocity = Vector2.ZERO
-	$CollisionShape2D.set_deferred("disabled", true)
-	
-	play_death_animation()
-	
-	yield($Tween, "tween_all_completed")
-	var timer = get_tree().create_timer(0.1)
-	timer.connect("timeout", self, "queue_free")
+func die(cause):
+	if not dead:
+		dead = true
+		
+		if cause.name == "Player":
+			cause.increase_combo()
+			$"Combo Counter".display(cause.combo)
+		
+		emit_signal("dead", cause)
+		
+		velocity = Vector2.ZERO
+		$CollisionShape2D.set_deferred("disabled", true)
+		
+		play_death_animation()
+		
+		yield($Tween, "tween_all_completed")
+		var timer = get_tree().create_timer(0.1)
+		timer.connect("timeout", self, "queue_free")
 
 func play_death_animation():
 	for segment in $Body.get_children():
