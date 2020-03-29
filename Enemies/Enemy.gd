@@ -39,7 +39,7 @@ func ai():
 func set_target_dir(target_pos):
 	target_dir = position.direction_to(target_pos)
 
-func _on_Tile_Collision_Enabler_body_exited(_body):
+func _on_Tile_Collision_Enabler_area_entered(_area):
 	$CollisionShape2D.set_deferred("disabled", false)
 
 func die():
