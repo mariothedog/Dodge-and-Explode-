@@ -94,7 +94,8 @@ func _process(_delta):
 			$"Visual Effect".material.set_shader_param("darkness_multi", darkness_multi)
 
 func _on_Player_dead():
-	$Camera2D.shake(0.4, 70.0, 16.0)
+	if global.screen_shake_enabled:
+		$Camera2D.shake(0.4, 70.0, 16.0)
 	
 	$"Spawn Enemy".stop()
 	for enemy in $Enemies.get_children():
@@ -118,8 +119,9 @@ func _on_Player_at_centre_after_restarting():
 	$Player.velocity = Vector2.ZERO
 
 func _on_Enemy_dead(cause):
-	if cause.name == "Player":
-		# If the player dashed into the enemy.
-		$Camera2D.shake(0.3, 30.0, 12.0)
-	else:
-		$Camera2D.shake(0.2, 15.0, 8.0)
+	if global.screen_shake_enabled:
+		if cause.name == "Player":
+			# If the player dashed into the enemy.
+			$Camera2D.shake(0.3, 30.0, 12.0)
+		else:
+			$Camera2D.shake(0.2, 15.0, 8.0)
