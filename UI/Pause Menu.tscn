@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://UI/Pause Menu.gd" type="Script" id=1]
 [ext_resource path="res://UI/Fonts/BalooDa2-Regular.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
+use_filter = true
 font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
 
 [node name="Pause Menu" type="MarginContainer"]
 pause_mode = 2
@@ -25,25 +29,66 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Outline" type="ColorRect" parent="."]
 margin_left = 400.0
 margin_top = 150.0
 margin_right = 624.0
 margin_bottom = 450.0
+color = Color( 0.239216, 0, 0, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 400.0
+margin_top = 150.0
+margin_right = 624.0
+margin_bottom = 450.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="Background" type="ColorRect" parent="MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 214.0
+margin_bottom = 290.0
 color = Color( 0.513726, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Screen Shake" type="CheckButton" parent="ColorRect"]
-margin_right = 76.0
+[node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 214.0
+margin_bottom = 290.0
+dragger_visibility = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Screen Shake" type="CheckButton" parent="MarginContainer/VSplitContainer"]
+margin_right = 204.0
 margin_bottom = 40.0
 focus_mode = 0
-custom_fonts/font = SubResource( 1 )
+theme = SubResource( 2 )
 pressed = true
 enabled_focus_mode = 0
 text = "Screen Shake"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="toggled" from="ColorRect/Screen Shake" to="." method="_on_Screen_Shake_toggled"]
+
+[node name="Audio" type="CheckButton" parent="MarginContainer/VSplitContainer"]
+margin_top = 52.0
+margin_right = 204.0
+margin_bottom = 280.0
+focus_mode = 0
+theme = SubResource( 2 )
+pressed = true
+enabled_focus_mode = 0
+text = "Audio"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="toggled" from="MarginContainer/VSplitContainer/Screen Shake" to="." method="_on_Screen_Shake_toggled"]
+[connection signal="toggled" from="MarginContainer/VSplitContainer/Audio" to="." method="_on_Audio_toggled"]

@@ -3,7 +3,8 @@ extends Control
 func _ready():
 	visible = false
 	
-	$"ColorRect/Screen Shake".pressed = global.screen_shake_enabled
+	$"MarginContainer/VSplitContainer/Screen Shake".pressed = global.screen_shake_enabled
+	$"MarginContainer/VSplitContainer/Audio".pressed = global.audio_enabled
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -15,3 +16,6 @@ func pause():
 
 func _on_Screen_Shake_toggled(button_pressed):
 	global.screen_shake_enabled = button_pressed
+
+func _on_Audio_toggled(button_pressed):
+	global.audio_enabled = button_pressed
