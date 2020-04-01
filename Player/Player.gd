@@ -89,6 +89,9 @@ func die():
 		
 		disable_collision_shapes()
 		
+		if global.audio_enabled:
+			$"Die SFX".play()
+		
 		play_death_animation()
 		
 		yield($Tween, "tween_all_completed")

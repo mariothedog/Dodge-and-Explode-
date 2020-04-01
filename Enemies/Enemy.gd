@@ -62,6 +62,9 @@ func die(cause):
 		velocity = Vector2.ZERO
 		$CollisionShape2D.set_deferred("disabled", true)
 		
+		if global.audio_enabled:
+			$"Die SFX".play()
+		
 		play_death_animation()
 		
 		yield($Tween, "tween_all_completed")

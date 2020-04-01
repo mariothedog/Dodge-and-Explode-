@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://UI/Combo Counter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Enemies/Audio/Die.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 12, 12 )
@@ -65,4 +66,7 @@ shape = SubResource( 1 )
 
 [node name="Combo Counter" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -32 )
+
+[node name="Die SFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
 [connection signal="body_exited" from="Tile Collision Enabler" to="." method="_on_Tile_Collision_Enabler_body_exited"]
