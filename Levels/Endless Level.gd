@@ -110,10 +110,11 @@ func manual_restart():
 	$Player.velocity = Vector2.ZERO
 	
 	for enemy in $Enemies.get_children():
-		if enemy.velocity == Vector2.ZERO:
-			enemy.velocity = enemy.target_dir * enemy.SPEED
-		enemy.velocity *= -1
-		enemy.disable_collisions()
+		if not enemy.dead:
+			if enemy.velocity == Vector2.ZERO:
+				enemy.velocity = enemy.target_dir * enemy.SPEED
+			enemy.velocity *= -1
+			enemy.disable_collisions()
 
 func _on_Player_at_centre_after_restarting():
 	$Player.velocity = Vector2.ZERO

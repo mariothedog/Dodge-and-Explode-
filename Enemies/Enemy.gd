@@ -16,10 +16,12 @@ func _ready():
 	if target_dir:
 		velocity = target_dir * SPEED
 	
-	if connect("dead", get_parent().get_parent().get_node("HUD"), "_on_Enemy_dead") != OK:
-		print_debug("An error occured while connecting a signal to a method.")
-	
-	if connect("dead", get_parent().get_parent(), "_on_Enemy_dead") != OK:
+	var level = get_parent().get_parent()
+	if level.has_node("HUD"):
+		var HUD = level.get_node("HUD")
+		if connect("dead", HUD, "_on_Enemy_dead") != OK:
+			print_debug("An error occured while connecting a signal to a method.")
+	if connect("dead", level, "_on_Enemy_dead") != OK:
 		print_debug("An error occured while connecting a signal to a method.")
 
 func _physics_process(_delta):
