@@ -1,11 +1,11 @@
-extends Control
+extends CanvasLayer
 
 func _ready():
-	visible = false
+	$MarginContainer.visible = false
 	
-	$"MarginContainer/VBoxContainer/Screen Shake".pressed = global.screen_shake_enabled
-	$"MarginContainer/VBoxContainer/Music/Music Slider".value = global.music_volume
-	$"MarginContainer/VBoxContainer/Audio/Audio Slider".value = global.audio_volume
+	$"MarginContainer/MarginContainer/VBoxContainer/Screen Shake".pressed = global.screen_shake_enabled
+	$"MarginContainer/MarginContainer/VBoxContainer/Music/Music Slider".value = global.music_volume
+	$"MarginContainer/MarginContainer/VBoxContainer/Audio/Audio Slider".value = global.audio_volume
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -13,7 +13,7 @@ func _input(_event):
 
 func pause():
 	get_tree().paused = not get_tree().paused
-	visible = not visible
+	$MarginContainer.visible = not $MarginContainer.visible
 
 func _on_Screen_Shake_toggled(button_pressed):
 	global.screen_shake_enabled = button_pressed
