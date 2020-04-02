@@ -69,4 +69,5 @@ position = Vector2( 0, -32 )
 
 [node name="Die SFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
+volume_db = -30.0
 [connection signal="body_exited" from="Tile Collision Enabler" to="." method="_on_Tile_Collision_Enabler_body_exited"]

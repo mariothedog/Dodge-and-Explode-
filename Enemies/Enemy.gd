@@ -63,6 +63,7 @@ func die(cause):
 		$CollisionShape2D.set_deferred("disabled", true)
 		
 		if global.audio_enabled:
+			$"Die SFX".volume_db = global.audio_volume - 30
 			$"Die SFX".play()
 		
 		play_death_animation()

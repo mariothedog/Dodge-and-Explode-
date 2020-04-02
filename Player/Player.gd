@@ -56,8 +56,13 @@ func get_input():
 	if Input.is_action_pressed("move_down"):
 		input_vel.y += 1
 	
-	if Input.is_action_just_pressed("dash") and input_vel != Vector2.ZERO:
+	if Input.is_action_just_pressed("dash") and input_vel != Vector2.ZERO and not currently_dashing:
 		currently_dashing = true
+		
+		if global.audio_enabled:
+			$"Dash SFX".volume_db = global.audio_volume - 30
+			$"Dash SFX".play()
+		
 		$Dash.start()
 	
 	if currently_dashing:
@@ -90,6 +95,7 @@ func die():
 		disable_collision_shapes()
 		
 		if global.audio_enabled:
+			$"Die SFX".volume_db = global.audio_volume - 20
 			$"Die SFX".play()
 		
 		play_death_animation()

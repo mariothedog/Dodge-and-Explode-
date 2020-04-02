@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 global="*res://global.gd"
+Music="*res://Music.tscn"
 
 [display]
 
