@@ -1,5 +1,0 @@
-Font:
-https://fonts.google.com/specimen/Baloo+Da+2
-
-Music:
-https://opengameart.org/content/5-chiptunes-action
