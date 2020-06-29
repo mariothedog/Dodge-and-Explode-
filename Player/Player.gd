@@ -6,14 +6,8 @@ var velocity = Vector2()
 
 func _unhandled_input(_event):
 	var input_vel = Vector2()
-	if Input.is_action_pressed("move_left"):
-		input_vel.x -= 1
-	if Input.is_action_pressed("move_right"):
-		input_vel.x += 1
-	if Input.is_action_pressed("move_up"):
-		input_vel.y -= 1
-	if Input.is_action_pressed("move_down"):
-		input_vel.y += 1
+	input_vel.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	input_vel.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	velocity = input_vel.normalized() * SPEED
 
 func _physics_process(_delta):
