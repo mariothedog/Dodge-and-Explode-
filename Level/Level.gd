@@ -1,9 +1,24 @@
 tool
 extends Node
 
+# Preload resources
+var enemy_scene = preload("res://Enemies/Enemy.tscn")
+
+# Get nodes in the scene
+onready var walls = get_node("Walls")
+onready var enemies = get_node("Enemies")
+onready var player = get_node("Player")
+
+# Export variables
 export (int) var width = 400 setget set_width
 export (int) var height = 400 setget set_height
 export (float) var collision_offset = 8 setget set_collision_offset
+
+# Constant variables
+const enemy_spawn_offset = 50
+
+func _ready():
+	randomize()
 
 func set_width(w):
 	width = w
@@ -40,3 +55,19 @@ func update_size():
 	
 	left_wall.position.x = -width / 2 - collision_offset
 	right_wall.position.x = width / 2 + collision_offset
+
+func _on_Spawn_Enemy_timeout():
+	var enemy_instance = enemy_scene.instance()
+	
+	var wall = walls.get_child(Util.rand_int(0, 4))
+	
+	var pos_x = rand_range(wall.position.x - wall.shape.extents.x, wall.position.x + wall.shape.extents.x)
+	var pos_y = rand_range(wall.position.y - wall.shape.extents.y, wall.position.y + wall.shape.extents.y)
+	var pos = Vector2(pos_x, pos_y)
+	var dir_to_player = pos.direction_to(player.position)
+	pos += -dir_to_player * enemy_spawn_offset
+	enemy_instance.position = pos
+	
+	enemy_instance.target_dir = dir_to_player
+	
+	enemies.add_child(enemy_instance)

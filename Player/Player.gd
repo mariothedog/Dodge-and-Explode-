@@ -18,3 +18,7 @@ func _unhandled_input(_event):
 
 func _physics_process(_delta):
 	velocity = move_and_slide(velocity)
+
+func die():
+	if get_tree().reload_current_scene() != OK:
+		print_debug("An error occurred while reloading the scene.")
