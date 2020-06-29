@@ -1,0 +1,55 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform bool enabled = true;
+uniform float time = 0.0;
+uniform float sprite_size = 32.0;
+uniform vec4 segment_color : hint_color;
+uniform float pixel_speed = 256.0;
+
+vec2 rotateVec2(vec2 vec, vec2 pivot, float rotation) {
+    float cosa = cos(rotation);
+    float sina = sin(rotation);
+    vec -= pivot;
+    return vec2(
+        cosa * vec.x - sina * vec.y,
+        cosa * vec.y + sina * vec.x 
+    ) + pivot;
+}
+
+void fragment() {
+	if (enabled) {
+		vec2 center = vec2(0.5);
+		vec2 dir = normalize(UV - center);
+		
+		vec2 size = TEXTURE_PIXEL_SIZE * sprite_size / 2.0;
+		
+		float distX = abs(UV.x - center.x);
+		float distY = abs(UV.y - center.y);
+		
+		vec2 speed = rotateVec2(TEXTURE_PIXEL_SIZE * pixel_speed, center, radians(0));
+		
+		float minDistX = speed.x * time;
+		float minDistY = speed.y * time;
+		
+		if (distX - minDistX < size.x && distY - minDistY < size.y && distX > minDistX && distY > minDistY) {
+			COLOR = segment_color;
+		}
+		else {
+			COLOR.a = 0.0;
+		}
+	}
+	else {
+		COLOR = texture(TEXTURE, UV);
+	}
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/enabled = true
+shader_param/time = 0.0
+shader_param/sprite_size = 32.0
+shader_param/segment_color = Color( 0.0509804, 0.0470588, 0.0470588, 1 )
+shader_param/pixel_speed = 256.0

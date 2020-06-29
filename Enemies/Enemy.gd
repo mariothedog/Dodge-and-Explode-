@@ -1,6 +1,6 @@
 extends Area2D
 
-# Constants
+# Constant variables
 const SPEED = 300
 
 # Variables

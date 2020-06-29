@@ -15,7 +15,7 @@ export (int) var height = 400 setget set_height
 export (float) var collision_offset = 8 setget set_collision_offset
 
 # Constant variables
-const enemy_spawn_offset = 50
+const ENEMY_SPAWN_OFFSET = 50
 
 func _ready():
 	randomize()
@@ -57,6 +57,9 @@ func update_size():
 	right_wall.position.x = width / 2 + collision_offset
 
 func _on_Spawn_Enemy_timeout():
+	if player.dead:
+		return
+	
 	var enemy_instance = enemy_scene.instance()
 	
 	var wall = walls.get_child(Util.rand_int(0, 4))
@@ -65,7 +68,7 @@ func _on_Spawn_Enemy_timeout():
 	var pos_y = rand_range(wall.position.y - wall.shape.extents.y, wall.position.y + wall.shape.extents.y)
 	var pos = Vector2(pos_x, pos_y)
 	var dir_to_player = pos.direction_to(player.position)
-	pos += -dir_to_player * enemy_spawn_offset
+	pos += -dir_to_player * ENEMY_SPAWN_OFFSET
 	enemy_instance.position = pos
 	
 	enemy_instance.target_dir = dir_to_player
