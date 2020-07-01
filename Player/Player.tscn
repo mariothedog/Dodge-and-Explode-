@@ -48,3 +48,11 @@ anims/Dash = SubResource( 3 )
 anims/Die = SubResource( 4 )
 anims/Idle = SubResource( 5 )
 anims/Run = SubResource( 6 )
+
+[node name="Dash Duration Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Can Kill Duration Timer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="Dash Duration Timer" to="." method="_on_Dash_Duration_Timer_timeout"]
+[connection signal="timeout" from="Can Kill Duration Timer" to="." method="_on_Can_Kill_Duration_Timer_timeout"]

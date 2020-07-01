@@ -10,8 +10,8 @@ onready var enemies = get_node("Enemies")
 onready var player = get_node("Player")
 
 # Export variables
-export (int) var width = 400 setget set_width
-export (int) var height = 400 setget set_height
+export (int) var width = 500 setget set_width
+export (int) var height = 500 setget set_height
 export (float) var collision_offset = 8 setget set_collision_offset
 
 # Constant variables

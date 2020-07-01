@@ -19,7 +19,10 @@ func die():
 
 func _on_Enemy_body_entered(body):
 	if body.name == "Player":
-		body.die()
+		if body.can_kill:
+			die()
+		else:
+			body.die()
 	elif body.name == "Walls" and visible:
 		die()
 
