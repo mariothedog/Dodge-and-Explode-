@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 
@@ -31,6 +31,9 @@ resource_name = "Idle"
 [sub_resource type="Animation" id=6]
 resource_name = "Run"
 
+[sub_resource type="CircleShape2D" id=7]
+radius = 40.0
+
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
 collision_mask = 5
@@ -54,5 +57,12 @@ one_shot = true
 
 [node name="Can Kill Duration Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Slow-mo Activator" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Slow-mo Activator"]
+shape = SubResource( 7 )
 [connection signal="timeout" from="Dash Duration Timer" to="." method="_on_Dash_Duration_Timer_timeout"]
 [connection signal="timeout" from="Can Kill Duration Timer" to="." method="_on_Can_Kill_Duration_Timer_timeout"]
+[connection signal="area_entered" from="Slow-mo Activator" to="." method="_on_Slowmo_Activator_area_entered"]
+[connection signal="area_exited" from="Slow-mo Activator" to="." method="_on_Slowmo_Activator_area_exited"]

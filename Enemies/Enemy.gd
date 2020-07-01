@@ -7,17 +7,17 @@ const SPEED = 300
 var target_dir = Vector2()
 var velocity = Vector2()
 
-func _ready():
+func _ready() -> void:
 	visible = false
 
-func _physics_process(delta):
+func _physics_process(delta) -> void:
 	velocity = target_dir * SPEED
 	position += velocity * delta
 
-func die():
+func die() -> void:
 	queue_free()
 
-func _on_Enemy_body_entered(body):
+func _on_Enemy_body_entered(body) -> void:
 	if body.name == "Player":
 		if body.can_kill:
 			die()
@@ -26,6 +26,6 @@ func _on_Enemy_body_entered(body):
 	elif body.name == "Walls" and visible:
 		die()
 
-func _on_Enemy_body_exited(body):
+func _on_Enemy_body_exited(body) -> void:
 	if body.name == "Walls":
 		visible = true

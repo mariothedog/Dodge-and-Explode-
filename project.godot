@@ -21,7 +21,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Util="*res://Util.gd"
+Util="*res://Util/Util.gd"
+Slowmo="*res://Slow-mo/Slow-mo.gd"
 
 [debug]
 

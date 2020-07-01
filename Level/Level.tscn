@@ -50,6 +50,6 @@ shape = SubResource( 2 )
 [node name="Enemies" type="Node" parent="."]
 
 [node name="Spawn Enemy" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.3
 autostart = true
 [connection signal="timeout" from="Spawn Enemy" to="." method="_on_Spawn_Enemy_timeout"]

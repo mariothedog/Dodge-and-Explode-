@@ -6,12 +6,13 @@ onready var collision_shape = get_node("CollisionShape2D")
 onready var animation_player = get_node("AnimationPlayer")
 onready var dash_duration_timer = get_node("Dash Duration Timer")
 onready var can_kill_duration_timer = get_node("Can Kill Duration Timer")
+onready var slowmo_collision_shape = get_node("Slow-mo Activator/CollisionShape2D")
 
 # Constant variables
 const SPEED = 400
 const DASH_SPEED = 2000
 const DASH_DURATION = 0.05
-const CAN_KILL_DURATION = 0.15
+const CAN_KILL_DURATION = 0.15 # To give some leniency if the player hits an enemy just after the dash ends
 
 # Variables
 var velocity = Vector2()
@@ -20,12 +21,12 @@ var dead = false
 var currently_dashing = false
 var can_kill = false
 
-func _physics_process(_delta):
+func _physics_process(_delta) -> void:
 	get_input()
 	move()
 	animate()
 
-func get_input():
+func get_input() -> void:
 	if dead:
 		return
 	
@@ -37,24 +38,27 @@ func get_input():
 		can_kill = true
 		can_kill_duration_timer.start(CAN_KILL_DURATION)
 	
-	if currently_dashing:
-		velocity = velocity.normalized() * DASH_SPEED
-		return
-	
 	input_vel.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	input_vel.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-	velocity = input_vel.normalized() * SPEED
+	
+	if currently_dashing:
+		if input_vel == Vector2.ZERO:
+			velocity = velocity.normalized() * DASH_SPEED
+		else:
+			velocity = input_vel.normalized() * DASH_SPEED
+	else:
+		velocity = input_vel.normalized() * SPEED
 
-func _on_Dash_Duration_Timer_timeout():
+func _on_Dash_Duration_Timer_timeout() -> void:
 	currently_dashing = false
 
-func _on_Can_Kill_Duration_Timer_timeout():
+func _on_Can_Kill_Duration_Timer_timeout() -> void:
 	can_kill = false
 
-func move():
+func move() -> void:
 	velocity = move_and_slide(velocity)
 
-func animate():
+func animate() -> void:
 	if input_vel != Vector2.ZERO:
 		sprite.rotation = input_vel.angle() + PI/2
 	
@@ -69,8 +73,10 @@ func animate():
 	else:
 		animation_player.play("Idle") # TODO
 
-func die():
+func die() -> void:
 	collision_shape.set_deferred("disabled", true)
+	slowmo_collision_shape.set_deferred("disabled", true)
+	Slowmo.stop()
 	dead = true
 	velocity = Vector2.ZERO
 	
@@ -80,3 +86,9 @@ func die():
 	
 	if get_tree().reload_current_scene() != OK:
 		print_debug("An error occurred while reloading the scene.")
+
+func _on_Slowmo_Activator_area_entered(_area):
+	Slowmo.start()
+
+func _on_Slowmo_Activator_area_exited(_area):
+	Slowmo.stop()

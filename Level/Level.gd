@@ -17,22 +17,22 @@ export (float) var collision_offset = 8 setget set_collision_offset
 # Constant variables
 const ENEMY_SPAWN_OFFSET = 50
 
-func _ready():
+func _ready() -> void:
 	randomize()
 
-func set_width(w):
+func set_width(w) -> void:
 	width = w
 	update_size()
 
-func set_height(h):
+func set_height(h) -> void:
 	height = h
 	update_size()
 
-func set_collision_offset(o):
+func set_collision_offset(o) -> void:
 	collision_offset = o
 	update_size()
 
-func update_size():
+func update_size() -> void:
 	if not has_node("Play Area"):
 		return
 	
@@ -56,7 +56,7 @@ func update_size():
 	left_wall.position.x = -width / 2 - collision_offset
 	right_wall.position.x = width / 2 + collision_offset
 
-func _on_Spawn_Enemy_timeout():
+func _on_Spawn_Enemy_timeout() -> void:
 	if player.dead:
 		return
 	
